@@ -7,11 +7,18 @@ import (
 
 // Config specifies the configurations to connect to the database.
 type Config struct {
-	Host            string `yaml:"host"`
-	Port            int    `yaml:"port"`
-	Username        string `yaml:"username"`
-	Database        string `yaml:"database"`
-	PasswordEnvName string `yaml:"passwordEnvName"`
+	Host            string    `yaml:"host"`
+	Port            int       `yaml:"port"`
+	Username        string    `yaml:"username"`
+	Database        string    `yaml:"database"`
+	PasswordEnvName string    `yaml:"passwordEnvName"`
+	SSL             SSLConfig `yaml:"ssl"`
+}
+
+// SSLConfig specifies the configurations for SSL.
+type SSLConfig struct {
+	Mode     string `yaml:"mode"`
+	RootCert string `yaml:"rootCert"`
 }
 
 // Validate validates the configuration.
@@ -30,6 +37,9 @@ func (c *Config) Validate() error {
 	}
 	if c.PasswordEnvName == "" {
 		return fmt.Errorf("passwordEnvName is required")
+	}
+	if c.SSL.Mode == "" {
+		return fmt.Errorf("ssl.mode is required")
 	}
 	return nil
 }
