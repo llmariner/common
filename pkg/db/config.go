@@ -13,6 +13,12 @@ type Config struct {
 	Database        string    `yaml:"database"`
 	PasswordEnvName string    `yaml:"passwordEnvName"`
 	SSL             SSLConfig `yaml:"ssl"`
+
+	// CreateDatabase specifies whether to create the database if it does not exist.
+	CreateDatabase bool `yaml:"createDatabase"`
+	// OriginalDatabase specifies the original database to connect to before creating the database.
+	// If empty, use "template1".
+	OriginalDatabase string `yaml:"originalDatabase"`
 }
 
 // SSLConfig specifies the configurations for SSL.
