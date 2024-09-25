@@ -1,4 +1,4 @@
-module github.com/llm-operator/common
+module github.com/llmariner/common
 
 go 1.22.2
 
