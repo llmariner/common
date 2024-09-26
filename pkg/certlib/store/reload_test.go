@@ -7,8 +7,8 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
-	"io/ioutil"
 	"math/big"
+	"os"
 	"testing"
 	"time"
 
@@ -76,10 +76,10 @@ func genCertPair(dir, cn string) error {
 		return err
 	}
 
-	if err := ioutil.WriteFile(dir+"/"+keyFile, key, 0600); err != nil {
+	if err := os.WriteFile(dir+"/"+keyFile, key, 0600); err != nil {
 		return err
 	}
-	if err := ioutil.WriteFile(dir+"/"+certFile, cert, 0644); err != nil {
+	if err := os.WriteFile(dir+"/"+certFile, cert, 0644); err != nil {
 		return err
 	}
 
