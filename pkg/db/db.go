@@ -31,7 +31,7 @@ func createDatabaseIfNotExists(c Config) error {
 
 	db, err := open(copied)
 	if err != nil {
-		return fmt.Errorf("open database %q: %s", c.OriginalDatabase, err)
+		return fmt.Errorf("open database %q: %s", copied.Database, err)
 	}
 	defer func() {
 		db, err := db.DB()
