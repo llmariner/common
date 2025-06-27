@@ -2,6 +2,8 @@ package aws
 
 import (
 	"context"
+	"crypto/tls"
+	"net/http"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -22,6 +24,8 @@ type NewConfigOptions struct {
 	UseAnonymousCredentials bool
 
 	AssumeRole *AssumeRole
+
+	InsecureSkipVerify bool
 }
 
 // NewConfig returns a new configuration.
@@ -52,5 +56,16 @@ func NewConfig(ctx context.Context, o NewConfigOptions) (aws.Config, error) {
 		)
 	}
 	conf.Region = o.Region
+
+	if o.InsecureSkipVerify {
+		conf.HTTPClient = &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					InsecureSkipVerify: true,
+				},
+			},
+		}
+	}
+
 	return conf, nil
 }
