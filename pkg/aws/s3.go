@@ -15,6 +15,8 @@ type NewS3ClientOptions struct {
 	UseAnonymousCredentials bool
 
 	AssumeRole *AssumeRole
+
+	InsecureSkipVerify bool
 }
 
 // NewS3Client returns a new S3 client.
@@ -23,6 +25,7 @@ func NewS3Client(ctx context.Context, o NewS3ClientOptions) (*s3.Client, error) 
 		Region:                  o.Region,
 		UseAnonymousCredentials: o.UseAnonymousCredentials,
 		AssumeRole:              o.AssumeRole,
+		InsecureSkipVerify:      o.InsecureSkipVerify,
 	})
 	if err != nil {
 		return nil, err
