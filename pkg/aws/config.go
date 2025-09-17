@@ -7,6 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 )
@@ -17,6 +18,12 @@ type AssumeRole struct {
 	ExternalID string
 }
 
+// Secret is the AWS secret.
+type Secret struct {
+	AccessKeyID     string
+	SecretAccessKey string
+}
+
 // NewConfigOptions is the configuration options.
 type NewConfigOptions struct {
 	Region string
@@ -24,6 +31,7 @@ type NewConfigOptions struct {
 	UseAnonymousCredentials bool
 
 	AssumeRole *AssumeRole
+	Secret     *Secret
 
 	InsecureSkipVerify bool
 }
@@ -54,7 +62,14 @@ func NewConfig(ctx context.Context, o NewConfigOptions) (aws.Config, error) {
 				}
 			},
 		)
+	} else if s := o.Secret; s != nil {
+		conf.Credentials = credentials.NewStaticCredentialsProvider(
+			s.AccessKeyID,
+			s.SecretAccessKey,
+			"", // Session token is empty for static credentials
+		)
 	}
+
 	conf.Region = o.Region
 
 	if o.InsecureSkipVerify {
